@@ -15,3 +15,11 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+/**
+ * * Type "npm start" in the terminal to start this app
+ * - The two important files are App.js and index.js
+ * - The React DOM or should we say this file renders the <App /> component and will display whatever layout is in that component.
+ *    - The component will be rendered inside the root HTML element <div id="root"></div>
+ * 
+ */
