@@ -2,17 +2,18 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../GlobalContext";
 
 const MovieList = () => {
-  const { movieList } = useContext(GlobalContext);
+  const { movieList, loading } = useContext(GlobalContext);
   console.log(movieList);
 
   return (
-    <div>
+    <div className="movies-container">
+      {loading &&  <span>Loading ! Please wait</span>}
       {movieList && movieList.length > 0
         ? movieList.map((item) => (
-            <div key={item.imdbID}>
-              <img src={item.Poster} alt="Movie Poster" />
-              <p>{item.Title}</p>
-              <p>{item.Year}</p>
+            <div className="item" key={item.imdbID}>
+              <img className="image" src={item.Poster} alt="Movie Poster" />
+              <p className="title">{item.Title}</p>
+              <p className="year">{item.Year}</p>
             </div>
           ))
         : null}

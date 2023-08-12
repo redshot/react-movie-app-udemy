@@ -10,18 +10,22 @@ export const GlobalContext = createContext({
 
 const GlobalState = ({children}) => { // a React component that uses the Context API to manage global state.
   const [searchParam, setSearchParam] = useState('');
+  const [loading, setLoading] = useState(false);
   const [movieList, setMovieList] = useState([]);
   const handleOnChange = (event) => {
     console.log(event.target.value);
     setSearchParam(event.target.value);
   }
   const handleSubmit = async () => {
+    setLoading(true);
     const response = await fetch(`https://www.omdbapi.com/?s=${searchParam}&apikey=d55443cb`);
     const data = await response.json();
     console.log(data);
 
     if (data) {
       setMovieList(data.Search);
+      setLoading(false);
+      setSearchParam(''); // clear search input after showing results
     }
   }
   const contextValue = {
@@ -29,7 +33,7 @@ const GlobalState = ({children}) => { // a React component that uses the Context
     handleOnChange, // method
     handleSubmit, // method
     movieList, // to store the movies that we are getting from an API
-    loading: false // this is a loading state to show a message while the API request is processing
+    loading // this is a loading state to show a message while the API request is processing
   }
 
   return ( // parethesis is not needed if return statement is only one line
