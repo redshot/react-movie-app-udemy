@@ -10,18 +10,25 @@ export const GlobalContext = createContext({
 
 const GlobalState = ({children}) => { // a React component that uses the Context API to manage global state.
   const [searchParam, setSearchParam] = useState('');
+  const [movieList, setMovieList] = useState([]);
   const handleOnChange = (event) => {
     console.log(event.target.value);
     setSearchParam(event.target.value);
   }
-  const handleSubmit = () => {
-    
+  const handleSubmit = async () => {
+    const response = await fetch(`https://www.omdbapi.com/?s=${searchParam}&apikey=d55443cb`);
+    const data = await response.json();
+    console.log(data);
+
+    if (data) {
+      setMovieList(data.Search);
+    }
   }
   const contextValue = {
     searchParam, // value of the search input
     handleOnChange, // method
     handleSubmit, // method
-    movieList: [], // to store the movies that we are getting from an API
+    movieList, // to store the movies that we are getting from an API
     loading: false // this is a loading state to show a message while the API request is processing
   }
 
@@ -73,10 +80,14 @@ export default GlobalState;
  *  - We need to pass the value in the GlobalState through the contextValue variable object
  *    - For now it contains the properties of GlobalContext since we have no state yet
  *  - Create a state
- *    - The code snippet const [searchParam, setSearchParam] = useState(''); is using the React useState hook to create a state
+ *    - const [searchParam, setSearchParam] = useState(''); is using the React useState hook to create a state
  *      variable called searchParam. The initial value of the state variable is an empty string (''). The setSearchParam
  *      function is used to update the value of the state variable.
  *    - The searchParam variable is passed inside the contextValue variable
+ *    - const [movieList, setMovieList] = useState([]); is a React hook that creates and manages a state variable called movieList.
+ *      - The initial value of movieList is an empty array.
+ *      - The setMovieList function is used to update the value of movieList.
+ * 
  *  - handleOnChange() method is created
  *  - handleSubmit() method is created
  *  - contextValue is being passed as a value in <GlobalContext.Provider value={contextValue}></GlobalContext.Provider>
