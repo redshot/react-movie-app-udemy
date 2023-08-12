@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../GlobalContext";
 
 const MovieList = () => {
-  const { movieList, loading } = useContext(GlobalContext);
+  const { movieList, loading } = useContext(GlobalContext); // destructure variables from context
   console.log(movieList);
 
   return (
