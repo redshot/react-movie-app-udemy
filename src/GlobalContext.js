@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext({
   searchParam: '', // value of the search input
@@ -20,10 +20,12 @@ const GlobalState = ({children}) => { // a React component that uses the Context
     setLoading(true);
     const response = await fetch(`https://www.omdbapi.com/?s=${searchParam}&apikey=d55443cb`);
     const data = await response.json();
+    console.log('data');
     console.log(data);
 
-    if (data) {
-      setMovieList(data.Search);
+    if (data) { // execute the code below once we get the data
+      setMovieList(data.Search); // a function to update the value of movieList
+      localStorage.setItem('movieList', JSON.stringify(data.Search)); // save the movies in the local storage
       setLoading(false);
       setSearchParam(''); // clear search input after showing results
     }
@@ -35,6 +37,14 @@ const GlobalState = ({children}) => { // a React component that uses the Context
     movieList, // to store the movies that we are getting from an API
     loading // this is a loading state to show a message while the API request is processing
   }
+
+  useEffect(() => { 
+    const getDataFromStorage = JSON.parse(localStorage.getItem('movieList')); // extract the movies from local storage
+
+    if (getDataFromStorage && getDataFromStorage.length > 0) {
+      setMovieList(getDataFromStorage); // a function to update the value of movieList
+    }
+  }, []);
 
   return ( // parethesis is not needed if return statement is only one line
     <GlobalContext.Provider value={contextValue}>
